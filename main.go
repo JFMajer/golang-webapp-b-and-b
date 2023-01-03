@@ -15,7 +15,7 @@ func Home(w http.ResponseWriter, r *http.Request) {
 
 // About is the about page handler
 func About(w http.ResponseWriter, r *http.Request) {
-	fmt.Fprint(w, "This is about us page")
+	renderTemplate(w, "about.page.tmpl")
 }
 
 func renderTemplate(w http.ResponseWriter, tmpl string) {
