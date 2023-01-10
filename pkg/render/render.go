@@ -8,6 +8,7 @@ import (
 	"text/template"
 
 	"github.com/JFMajer/golang-webapp-b-and-b/pkg/config"
+	"github.com/JFMajer/golang-webapp-b-and-b/pkg/models"
 )
 
 var app *config.AppConfig
@@ -17,15 +18,19 @@ func NewTemplates(a *config.AppConfig) {
 	app = a
 }
 
+func AddDefaultData(td *models.TemplateData) *models.TemplateData {
+
+	return td
+}
+
 // RenderTemplate function renders a template using html template
-func RenderTemplate(w http.ResponseWriter, tmpl string) {
+func RenderTemplate(w http.ResponseWriter, tmpl string, td *models.TemplateData) {
 	var tc map[string]*template.Template
 	if app.UseCache {
 		tc = app.TemplateCache
 	} else {
 		tc, _ = CreateTemplateCache()
 	}
-	// create a template cache
 
 	// get requested template from cache
 	t, ok := tc[tmpl]
@@ -33,7 +38,10 @@ func RenderTemplate(w http.ResponseWriter, tmpl string) {
 		log.Fatal("Could not get template from template cache")
 	}
 	buf := new(bytes.Buffer)
-	err := t.Execute(buf, nil)
+
+	td = AddDefaultData(td)
+
+	err := t.Execute(buf, td)
 	if err != nil {
 		log.Fatal(err)
 	}
