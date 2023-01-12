@@ -10,6 +10,14 @@
         <p>This is another paragraph of text used to test cache.</p>
 
         <p>This came from template: {{ index .StringMap "test" }}
+
+        <p>
+          {{ if ne (index .StringMap "remote_ip") "" }}
+            Your IP address is {{ index .StringMap "remote_ip" }}
+          {{ else }}
+            I don't know your ip address yet. Please visit <a href="/">home</a> to find out.
+          {{ end }}
+        </p>
       </div>
     </div>
   </div>
